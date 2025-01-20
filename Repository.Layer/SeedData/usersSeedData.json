@@ -1,0 +1,79 @@
+[
+  {
+    "UserName": "admin",
+    "Email": "admin@example.com",
+    "DisplayName": "Admin User",
+    "Password": "Admin@123",
+    "Roles": [ "Admin" ]
+  },
+  {
+    "UserName": "support1",
+    "Email": "support1@example.com",
+    "DisplayName": "Support Agent 1",
+    "Password": "Support1@123",
+    "Roles": [ "SupportAgent" ]
+  },
+  {
+    "UserName": "support2",
+    "Email": "support2@example.com",
+    "DisplayName": "Support Agent 2",
+    "Password": "Support2@123",
+    "Roles": [ "SupportAgent" ]
+  },
+  {
+    "UserName": "manager1",
+    "Email": "manager1@example.com",
+    "DisplayName": "Manager 1",
+    "Password": "Manager1@123",
+    "Roles": [ "Manager" ]
+  },
+  {
+    "UserName": "manager2",
+    "Email": "manager2@example.com",
+    "DisplayName": "Manager 2",
+    "Password": "Manager2@123",
+    "Roles": [ "Manager" ]
+  },
+  {
+    "UserName": "user1",
+    "Email": "user1@example.com",
+    "DisplayName": "Regular User 1",
+    "Password": "User1@123",
+    "Roles": [ "User" ]
+  },
+  {
+    "UserName": "user2",
+    "Email": "user2@example.com",
+    "DisplayName": "Regular User 2",
+    "Password": "User2@123",
+    "Roles": [ "User" ]
+  },
+  {
+    "UserName": "user3",
+    "Email": "user3@example.com",
+    "DisplayName": "Regular User 3",
+    "Password": "User3@123",
+    "Roles": [ "User" ]
+  },
+  {
+    "UserName": "auditor1",
+    "Email": "auditor1@example.com",
+    "DisplayName": "Auditor 1",
+    "Password": "Auditor1@123",
+    "Roles": [ "Auditor" ]
+  },
+  {
+    "UserName": "auditor2",
+    "Email": "auditor2@example.com",
+    "DisplayName": "Auditor 2",
+    "Password": "Auditor2@123!",
+    "Roles": [ "Auditor" ]
+  },
+  {
+    "UserName": "auditor_manager",
+    "Email": "auditor_manager@example.com",
+    "DisplayName": "auditor_manager",
+    "Password": "Auditor_manager@123",
+    "Roles": [ "Auditor", "Manager" ]
+  }
+]
