@@ -2,6 +2,7 @@
 using Data.Layer.Entities;
 using Microsoft.Extensions.Configuration;
 using Repository.Layer.Interfaces;
+using Repository.Layer.Specification.TicketSpecs;
 using Services.Layer.Dtos;
 
 namespace Services.Layer.Services
@@ -18,9 +19,10 @@ namespace Services.Layer.Services
             _configuration = configuration;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<TicketDto>> GetTicketsAsync()
+        public async Task<IEnumerable<TicketDto>> GetTicketsAsync(TicketSpecification specs)
         {
-            var Tickets = await _unitOfWork.Repository<Ticket, Guid>().GetAll(); // without include
+            var TicketSpec = new TicketWithSpecifications(specs);
+            var Tickets = await _unitOfWork.Repository<Ticket, Guid>().GetAllWithSpecs(TicketSpec); // with include
             // map tickets to tickets dto
             var TicketsDto = _mapper.Map<IEnumerable<TicketDto>>(Tickets);
             return TicketsDto;
@@ -36,9 +38,13 @@ namespace Services.Layer.Services
             throw new NotImplementedException();
         }
 
-        public Task<TicketDto> GetTicketAsync(Guid id)
+        public async Task<TicketDto> GetTicketAsync(string Id)
         {
-            throw new NotImplementedException();
+            var TicketSpec = new TicketWithSpecifications(Guid.Parse(Id));
+            var Tickets = await _unitOfWork.Repository<Ticket, Guid>().GetByIdWithSpecs(TicketSpec); // with include
+            // map tickets to tickets dto
+            var TicketDto = _mapper.Map<TicketDto>(Tickets);
+            return TicketDto;
         }
 
         public Task<TicketDto> UpdateTicketAsync(TicketDto ticketDto)

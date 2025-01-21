@@ -2,6 +2,7 @@
 using Data.Layer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Repository.Layer.Interfaces;
+using Repository.Layer.Specification;
 
 namespace Repository.Layer
 {
@@ -28,9 +29,9 @@ namespace Repository.Layer
             return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllWithSpecs()
+        public async Task<IEnumerable<TEntity>> GetAllWithSpecs(ISpecification<TEntity> specs)
         {
-            throw new NotImplementedException();
+            return await SpecificationEvaluator<TEntity, TKey>.GetQuery(_context.Set<TEntity>().AsQueryable(), specs).ToListAsync();
         }
 
         public async Task<TEntity> GetById(TKey id)
@@ -38,9 +39,9 @@ namespace Repository.Layer
             return await _context.Set<TEntity>().FindAsync(id);
         }
 
-        public Task<TEntity> GetByIdWithSpecs(TKey id)
+        public async Task<TEntity> GetByIdWithSpecs(ISpecification<TEntity> specs)
         {
-            throw new NotImplementedException();
+            return await SpecificationEvaluator<TEntity, TKey>.GetQuery(_context.Set<TEntity>().AsQueryable(), specs).FirstOrDefaultAsync();
         }
 
         public async Task Update(TEntity entity)

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Playground_Environment.Controllers
+namespace Playground_Environment.Controllers.Account
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
