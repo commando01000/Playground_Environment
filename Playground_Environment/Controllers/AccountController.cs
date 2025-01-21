@@ -18,7 +18,6 @@ namespace Playground_Environment.Controllers
             _userService = userService;
         }
 
-
         [HttpPost]
         public async Task<ActionResult<UserDto>> Login([FromBody] LoginDto input)
         {
@@ -58,7 +57,7 @@ namespace Playground_Environment.Controllers
             }
             else
             {
-                return BadRequest(new { success = false, message = "حدث خطأ يرجى المحاولة مجددا لاحقا" });
+                return Ok(new { status = false, message = "User not found", data = new UserDto() });
             }
         }
     }
