@@ -18,6 +18,18 @@ namespace Playground_Environment
             builder.Services.AddIdentityServices(builder.Configuration);
             builder.Services.AddSwaggerServices(builder.Configuration);
 
+            // Add CORS policy
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -61,7 +73,9 @@ namespace Playground_Environment
 
 
             app.MapControllers();
-
+            
+            // Use CORS policy
+            app.UseCors("AllowAllOrigins");
             app.Run();
         }
     }

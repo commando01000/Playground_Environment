@@ -31,6 +31,10 @@ namespace Playground_Environment.Extensions
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddGoogle(options =>
+            {
+                options.ClientId = configuration["Google:ClientId"];
+                options.ClientSecret = configuration["Google:ClientSecret"];
             })
             .AddJwtBearer(options =>
             {
@@ -62,7 +66,6 @@ namespace Playground_Environment.Extensions
                     }
                 };
             });
-
             return services;
         }
     }
