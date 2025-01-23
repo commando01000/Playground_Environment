@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Repository.Layer;
 using Repository.Layer.Interfaces;
 using Services.Layer.Services;
+using Services.Layer.Services.Payment;
 using Services.Layer.Services.Token;
 using Services.Layer.Services.User;
 
@@ -20,6 +21,7 @@ namespace Playground_Environment.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(Program).Assembly);
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITicketService, TicketService>();
             return services;
