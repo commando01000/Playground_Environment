@@ -33,6 +33,7 @@ namespace Playground_Environment.Extensions
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer",
+                     BearerFormat = "JWT",
                     Reference = new OpenApiReference
                     {
                         Id = "Bearer",

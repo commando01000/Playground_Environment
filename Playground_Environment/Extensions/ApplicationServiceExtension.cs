@@ -3,6 +3,7 @@ using Data.Layer.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Repository.Layer;
 using Repository.Layer.Interfaces;
+using Services.Layer.Profiles;
 using Services.Layer.Services;
 using Services.Layer.Services.Payment;
 using Services.Layer.Services.Token;
@@ -19,7 +20,7 @@ namespace Playground_Environment.Extensions
             services.AddControllers();
             services.AddHttpContextAccessor();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddAutoMapper(typeof(Program).Assembly);
+            services.AddAutoMapper(typeof(TicketProfile).Assembly);
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IUserService, UserService>();

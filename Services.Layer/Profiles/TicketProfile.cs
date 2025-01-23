@@ -9,8 +9,8 @@ namespace Services.Layer.Profiles
         public TicketProfile()
         {
             CreateMap<Ticket, TicketDto>()
-                .ForMember(t => t.UserName, opt => opt.MapFrom(t => t.User.UserName))
-                .ReverseMap(); // AutoMapper will map Ticket to TicketDto and vice versa
+            .ForMember(t => t.UserName, opt => opt.MapFrom(t => t.User != null ? t.User.UserName : "Unknown Username"))
+            .ReverseMap();
         }
     }
 }
