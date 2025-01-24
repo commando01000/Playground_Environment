@@ -49,7 +49,7 @@ namespace Playground_Environment.Controllers.Account
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> ExternalLogin(string provider, string returnUrl)
+        public async Task<ActionResult> ExternalLogin(string provider, string returnUrl)
         {
             var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
@@ -58,7 +58,7 @@ namespace Playground_Environment.Controllers.Account
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        public async Task<ActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
         {
             if (remoteError != null)
             {
