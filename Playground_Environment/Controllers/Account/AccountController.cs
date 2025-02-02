@@ -74,7 +74,7 @@ namespace Playground_Environment.Controllers.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
-                return LocalRedirect(returnUrl ?? "/");
+                return Redirect($"http://localhost:4200{returnUrl ?? "/auth/login"}");
             }
             else
             {
@@ -99,7 +99,7 @@ namespace Playground_Environment.Controllers.Account
                     if (addLoginResult.Succeeded)
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl ?? "/");
+                        return Redirect($"http://localhost:4200{returnUrl ?? "/auth/login"}");
                     }
                     else
                     {

@@ -31,7 +31,8 @@ namespace Playground_Environment.Extensions
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddGoogle(options =>
+            })
+            .AddGoogle(options =>
             {
                 options.ClientId = configuration["Google:ClientId"];
                 options.ClientSecret = configuration["Google:ClientSecret"];
