@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Data.Layer.Entities.Identity;
+using Services.Layer.Services.Token;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace Playground_Environment.Controllers.Account
 {
@@ -17,12 +21,14 @@ namespace Playground_Environment.Controllers.Account
         private readonly IUserService _userService;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
+        private readonly ITokenService _tokenService;
 
-        public AccountController(IUserService userService, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+        public AccountController(IUserService userService, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ITokenService tokenService)
         {
             _userService = userService;
             _signInManager = signInManager;
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         [AllowAnonymous]
@@ -58,7 +64,7 @@ namespace Playground_Environment.Controllers.Account
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
         {
             if (remoteError != null)
             {
@@ -72,45 +78,50 @@ namespace Playground_Environment.Controllers.Account
             }
 
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+
+            AppUser user;
             if (result.Succeeded)
             {
-                return Redirect($"http://localhost:4200{returnUrl ?? "/auth/login"}");
+                // User already exists, retrieve it
+                user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
             }
             else
             {
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                var user = await _userManager.FindByEmailAsync(email);
                 var name = info.Principal.FindFirstValue(ClaimTypes.Name);
-                var profilePicture = info.Principal.FindFirstValue("picture"); // Google provides a profile picture URL
-                // If the user does not exist, create a new user and link the external login
-                user = new AppUser
-                {
-                    UserName = name,
-                    Email = email,
-                    DisplayName = name,
-                    EmailConfirmed = true // Mark email as confirmed since it's from Google
-                };
 
-                var createUserResult = await _userManager.CreateAsync(user);
-                if (createUserResult.Succeeded)
+                user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
                 {
-                    // Link the external login to the new user
+                    user = new AppUser
+                    {
+                        UserName = name,
+                        Email = email,
+                        DisplayName = name,
+                        EmailConfirmed = true
+                    };
+
+                    var createUserResult = await _userManager.CreateAsync(user);
+                    if (!createUserResult.Succeeded)
+                    {
+                        return BadRequest("Failed to create a new user.");
+                    }
+
                     var addLoginResult = await _userManager.AddLoginAsync(user, info);
-                    if (addLoginResult.Succeeded)
+                    if (!addLoginResult.Succeeded)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return Redirect($"http://localhost:4200{returnUrl ?? "/auth/login"}");
-                    }
-                    else
-                    {
-                        return BadRequest("Failed to link external login to the new user.");
+                        return BadRequest("Failed to link external login.");
                     }
                 }
-                else
-                {
-                    return BadRequest("Failed to create a new user.");
-                }
+
+                await _signInManager.SignInAsync(user, isPersistent: false);
             }
+
+            // Generate JWT Token
+            var token = await _tokenService.GenerateAccessToken(user);
+
+            // Return JSON response instead of redirecting
+            return Redirect($"http://localhost:4200/external-login-callback?token={token}");
         }
 
         [AllowAnonymous]
