@@ -77,7 +77,7 @@ namespace Playground_Environment.Controllers.Account
                 return BadRequest("Error loading external login information.");
             }
 
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true, bypassTwoFactor: false);
 
             AppUser user;
             if (result.Succeeded)
