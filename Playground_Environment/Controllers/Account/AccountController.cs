@@ -95,7 +95,7 @@ namespace Playground_Environment.Controllers.Account
                 {
                     user = new AppUser
                     {
-                        UserName = name,
+                        UserName = email,
                         Email = email,
                         DisplayName = name,
                         EmailConfirmed = true
@@ -114,7 +114,7 @@ namespace Playground_Environment.Controllers.Account
                     }
                 }
 
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                await _signInManager.SignInAsync(user, isPersistent: true);
             }
 
             // Generate JWT Token
